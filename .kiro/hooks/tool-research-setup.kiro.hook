@@ -1,0 +1,22 @@
+{
+  "enabled": true,
+  "name": "Tool Research & MCP Setup",
+  "description": "Monitors development activity and automatically researches and sets up MCP servers for tools that could aid development work, then removes them when no longer needed to avoid repo bloat.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/**/*.ts",
+      "src/**/*.js",
+      "src/**/*.tsx",
+      "src/**/*.jsx",
+      "package.json",
+      "devvit.json",
+      ".kiro/settings/**"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Analyze the recent file changes to determine if any development challenges or needs have emerged that could benefit from additional tools or platforms. If you identify areas where you lack the necessary tools to effectively assist with development, use the brave search tool to research appropriate tools or platforms that can be integrated via MCP servers. Research how to set them up and create new MCP server configurations in .kiro/settings/ for each useful tool. Ask the user for any required API keys. When tools are no longer needed for the current development phase, remove their MCP server configurations to keep the codebase clean."
+  }
+}

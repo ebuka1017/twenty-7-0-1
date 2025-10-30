@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "name": "Research Before Implementation",
+  "description": "Automatically triggers research using BRAVE-SEARCH when creating or updating files to ensure proper implementation understanding",
+  "version": "1",
+  "when": {
+    "type": "fileCreated",
+    "patterns": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "src/**/*.js",
+      "src/**/*.jsx",
+      "src/**/*.html",
+      "src/**/*.css",
+      "devvit.json",
+      "package.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "MUST USE TOOLS WHEN CREATING OR UPDATING A NEW FILE: BRAVE-SEARCH. THIS IS SO YOU CAN RESEARCH WHAT YOU'RE ABOUT TO DO, AND BETTER UNDERSTAND THE RIGHT STEPS TO TAKE IN IMPLEMENTATION. Research the specific technology, framework, or implementation pattern you're about to work with before making changes."
+  }
+}

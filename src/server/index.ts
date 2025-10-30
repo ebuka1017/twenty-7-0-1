@@ -124,6 +124,39 @@ router.post('/internal/menu/post-create', async (_req, res): Promise<void> => {
   }
 });
 
+router.post('/internal/menu/cipher-create', async (_req, res): Promise<void> => {
+  try {
+    // For now, create a basic cipher post - will be enhanced in later tasks
+    const post = await createPost();
+
+    res.json({
+      navigateTo: `https://reddit.com/r/${context.subredditName}/comments/${post.id}`,
+    });
+  } catch (error) {
+    console.error(`Error creating cipher post: ${error}`);
+    res.status(400).json({
+      status: 'error',
+      message: 'Failed to create cipher post',
+    });
+  }
+});
+
+router.post('/internal/on-comment-submit', async (_req, res): Promise<void> => {
+  try {
+    // Placeholder for comment processing - will be enhanced in later tasks
+    res.json({
+      status: 'success',
+      message: 'Comment processed',
+    });
+  } catch (error) {
+    console.error(`Error processing comment: ${error}`);
+    res.status(400).json({
+      status: 'error',
+      message: 'Failed to process comment',
+    });
+  }
+});
+
 // Use router middleware
 app.use(router);
 

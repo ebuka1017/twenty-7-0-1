@@ -8,20 +8,19 @@ export const createPost = async () => {
 
   return await reddit.submitCustomPost({
     splash: {
-      // Splash Screen Configuration
-      appDisplayName: 'twenty-7-0-1',
-      backgroundUri: 'default-splash.png',
-      buttonLabel: 'Tap to Start',
-      description: 'An exciting interactive experience',
-      entryUri: 'index.html',
-      heading: 'Welcome to the Game!',
-      appIconUri: 'default-icon.png',
+      // 2701 Cyberpunk Vault Splash Screen
+      appDisplayName: '2701',
+      backgroundUri: 'vault-background.svg',
+      buttonLabel: 'Enter the Vault',
+      description: 'A New Cipher Has Dropped - Decode the mystery within',
+      heading: 'A New Cipher Has Dropped',
+      appIconUri: 'cicada-icon.svg',
     },
     postData: {
-      gameState: 'initial',
-      score: 0,
+      gameState: 'vault_entry',
+      cipherActive: true,
     },
     subredditName: subredditName,
-    title: 'twenty-7-0-1',
+    title: '2701: New Cipher Available',
   });
 };

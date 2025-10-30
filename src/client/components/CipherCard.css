@@ -1,0 +1,265 @@
+/* Cipher Card Styles */
+.cipher-card {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cipher-card:hover {
+  border-color: #00ff88;
+}
+
+.cipher-card.expired {
+  opacity: 0.6;
+  cursor: not-allowed;
+  border-color: #ff6b6b;
+}
+
+.cipher-card.urgent {
+  animation: pulse-urgent 2s infinite;
+}
+
+@keyframes pulse-urgent {
+  0%, 100% { 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  50% { 
+    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
+  }
+}
+
+/* Card Header */
+.cipher-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.cipher-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+  flex: 1;
+}
+
+.difficulty-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* Card Content */
+.cipher-content {
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.cipher-hint {
+  margin-bottom: 1rem;
+}
+
+.hint-label {
+  color: #00ff88;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.hint-text {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.cipher-preview {
+  background: #1a1a1a;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  padding: 0.75rem;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-cipher code {
+  color: #00ff88;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  word-break: break-all;
+}
+
+.image-cipher,
+.audio-cipher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #a0a0a0;
+  font-size: 0.9rem;
+}
+
+.format-icon {
+  font-size: 1.5rem;
+}
+
+/* Card Footer */
+.cipher-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.timer-section {
+  flex: 1;
+}
+
+.countdown-timer {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #00ff88;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 0.25rem;
+}
+
+.countdown-timer.urgent {
+  color: #ff6b6b;
+  animation: blink 1s infinite;
+}
+
+.countdown-timer.expired {
+  color: #ff6b6b;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.5; }
+}
+
+.timer-label {
+  font-size: 0.7rem;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.stats-section {
+  display: flex;
+  gap: 1rem;
+}
+
+.guess-count {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Card Overlay */
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 255, 136, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+
+.cipher-card:hover .card-overlay {
+  opacity: 1;
+}
+
+.enter-button {
+  background: #00ff88;
+  color: #1a1a1a;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transform: translateY(10px);
+  transition: transform 0.3s ease;
+}
+
+.cipher-card:hover .enter-button {
+  transform: translateY(0);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .cipher-card {
+    padding: 1rem;
+    min-height: 180px;
+  }
+  
+  .cipher-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .cipher-title {
+    font-size: 1rem;
+  }
+  
+  .difficulty-badge {
+    align-self: flex-start;
+  }
+  
+  .cipher-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .stats-section {
+    align-self: flex-end;
+  }
+}
+
+/* Touch Targets for Mobile */
+@media (max-width: 768px) {
+  .cipher-card {
+    min-height: 44px; /* Minimum touch target */
+    touch-action: manipulation; /* Remove tap delay */
+  }
+}

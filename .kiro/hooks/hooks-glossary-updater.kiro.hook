@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "Hooks Glossary Updater",
+  "description": "Automatically creates or updates a HOOKS_GLOSSARY.md file that describes all the hooks working in the background, what they do, how they work, and how they are helping with development whenever hook configurations change",
+  "version": "1",
+  "when": {
+    "type": "userTriggered",
+    "patterns": [
+      ".kiro/hooks/*.json",
+      ".kiro/hooks.json",
+      ".kiro/config/*.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A hook configuration file has been modified. Please analyze all existing hook configurations in the .kiro directory and create or update a HOOKS_GLOSSARY.md file in the root directory. This file should provide a comprehensive overview of all hooks currently active in the project, including: 1) A brief introduction explaining what hooks are and their purpose in the development workflow, 2) For each hook: the hook name, description, what file patterns it watches, when it triggers, what it does when triggered, and how it helps with development, 3) A summary of how all hooks work together to enhance the development experience. Make the documentation clear and accessible for developers who want to understand the automated assistance available in this project."
+  }
+}
