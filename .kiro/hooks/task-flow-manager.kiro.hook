@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "name": "Task Flow Manager",
+  "description": "Automatically triggers the next unresolved task after successful completion, implements exponential backoff retry logic for failed tasks up to 3 attempts, and ensures continuous execution without pauses unless escalation is needed",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "*.json",
+      "*.yaml",
+      "*.yml",
+      "*.log",
+      "*.status",
+      "task*",
+      "*task*",
+      "*status*"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Monitor task completion status. If a task completed successfully, immediately identify and trigger the next unresolved task in the queue. If a task failed, implement exponential backoff retry (1s, 2s, 4s delays) up to 3 attempts before escalating. Maintain continuous execution flow without manual intervention unless escalation to human is required. Prioritize task queue management and failure recovery."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "enabled": true,
+  "name": "Code Correction Learner",
+  "description": "Monitors edits to AI-generated code files to extract correction intent, update originating specifications, and maintain a corrections log to prevent future similar errors",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.py",
+      "**/*.js",
+      "**/*.ts",
+      "**/*.java",
+      "**/*.cpp",
+      "**/*.c",
+      "**/*.go",
+      "**/*.rs",
+      "**/*.rb",
+      "**/*.php",
+      "**/*.cs",
+      "**/*.swift",
+      "**/*.kt"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A code file has been modified. Please analyze the changes to determine if this was a correction to AI-generated code. If so: 1) Extract the intent behind the correction and identify what type of error was being fixed, 2) Update any relevant specification files that may have led to this error, 3) Update or create a user_corrections.md file documenting this correction pattern to prevent similar errors in the future. Focus on learning from human intervention to improve future code generation."
+  }
+}

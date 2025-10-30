@@ -1,0 +1,31 @@
+{
+  "enabled": true,
+  "name": "Code Cleanup Detector",
+  "description": "Monitors code files to detect unused functions, stale code, abandoned branches, and outdated libraries. Suggests deletion and automatically removes items unused for over three days with reversible checkpoints.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.js",
+      "**/*.ts",
+      "**/*.py",
+      "**/*.java",
+      "**/*.cpp",
+      "**/*.c",
+      "**/*.go",
+      "**/*.rs",
+      "**/*.php",
+      "**/*.rb",
+      "package.json",
+      "requirements.txt",
+      "Cargo.toml",
+      "pom.xml",
+      "build.gradle",
+      "composer.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Analyze the modified files to detect: 1) Unused functions and variables that haven't been referenced in 3+ days, 2) Stale code blocks or commented code, 3) Abandoned git branches with no recent activity, 4) Outdated library dependencies with available updates. For items unused over 3 days, create a reversible checkpoint and automatically remove them. For other issues, provide specific suggestions for cleanup with file locations and line numbers."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "enabled": true,
+  "name": "Automation Performance Tracker",
+  "description": "Monitors the success ratio of every automation path, automatically rewrites internal logic and prompts for underperforming hooks, and escalates to humans only when safety sign-off is required",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      ".kiro/**/*.json",
+      ".kiro/**/*.yaml",
+      ".kiro/**/*.yml",
+      "**/*hook*.json",
+      "**/*automation*.json",
+      "**/*config*.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Analyze the automation performance data and hook configurations that have been modified. Calculate success ratios for each automation path. For any hooks with success ratios below 80%, automatically rewrite their internal logic and prompts to improve performance. Only escalate to human review if the changes involve safety-critical operations or require architectural modifications. Provide a summary of performance metrics, any optimizations made, and escalation recommendations."
+  }
+}

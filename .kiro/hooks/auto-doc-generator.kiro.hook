@@ -1,0 +1,35 @@
+{
+  "enabled": true,
+  "name": "Auto Documentation Generator",
+  "description": "Automatically generates markdown documentation when code or tools are created or modified. Ensures documentation precedes deployment and reflects the latest specifications. Detects drift and rewrites documentation as needed.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.py",
+      "**/*.js",
+      "**/*.ts",
+      "**/*.java",
+      "**/*.cpp",
+      "**/*.c",
+      "**/*.go",
+      "**/*.rs",
+      "**/*.rb",
+      "**/*.php",
+      "**/*.sh",
+      "**/*.yaml",
+      "**/*.yml",
+      "**/*.json",
+      "**/*.toml",
+      "**/*.cfg",
+      "**/*.ini",
+      "**/Dockerfile",
+      "**/Makefile",
+      "**/*.sql"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A code or tool file has been modified. Please analyze the changes and generate comprehensive markdown documentation that:\n1. Documents the purpose, functionality, and usage of the code/tool\n2. Includes API documentation, parameters, return values, and examples where applicable\n3. Covers installation, configuration, and deployment instructions\n4. Identifies any breaking changes or version updates\n5. Ensures the documentation is up-to-date with the current implementation\n6. If existing documentation exists, compare it with the current code and update any sections that have drifted\n7. Create the documentation in an appropriate location (same directory or docs folder) with a clear filename\n8. Ensure documentation is complete before any deployment processes begin"
+  }
+}

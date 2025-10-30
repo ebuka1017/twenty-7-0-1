@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Minimal Human Governance",
+  "description": "Monitors all file changes and ensures Kiro escalates only when irreversible risk exists or explicit authentication is required, executing all other actions autonomously",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Analyze the file changes and determine if they involve irreversible risk (like permanent data deletion, system configuration changes, or security modifications) or require explicit authentication. If so, escalate to human governance. Otherwise, proceed autonomously with the requested changes while maintaining safety protocols."
+  }
+}

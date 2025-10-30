@@ -1,0 +1,53 @@
+{
+  "$schema": "https://developers.reddit.com/schema/config-file.v1.json",
+  "name": "2701-arg-platform",
+  "post": {
+    "dir": "dist/client",
+    "entrypoints": {
+      "default": {
+        "entry": "index.html"
+      }
+    }
+  },
+  "server": {
+    "dir": "dist/server",
+    "entry": "index.cjs"
+  },
+  "media": {
+    "dir": "assets"
+  },
+  "permissions": [
+    "webview",
+    "realtime",
+    "kvstore",
+    "scheduler",
+    "triggers"
+  ],
+  "menu": {
+    "items": [
+      {
+        "label": "Create a new cipher",
+        "description": "Generate a new 2701 cipher puzzle",
+        "location": "subreddit",
+        "forUserType": "moderator",
+        "endpoint": "/internal/menu/cipher-create"
+      }
+    ]
+  },
+  "triggers": {
+    "onAppInstall": "/internal/on-app-install",
+    "onCommentSubmit": "/internal/on-comment-submit"
+  },
+  "scheduler": {
+    "jobs": [
+      {
+        "name": "generateCipher",
+        "cron": "0 * * * *"
+      },
+      {
+        "name": "expireCiphers", 
+        "cron": "*/5 * * * *"
+      }
+    ]
+  }
+}

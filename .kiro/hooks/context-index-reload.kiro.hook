@@ -1,0 +1,38 @@
+{
+  "enabled": true,
+  "name": "Context Index Auto-Reload",
+  "description": "Automatically reloads and updates the context index when any relevant files are modified, ensuring all knowledge, decisions, and architectural constraints persist in a single evolving context",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.md",
+      "**/*.txt",
+      "**/*.json",
+      "**/*.yaml",
+      "**/*.yml",
+      "**/*.js",
+      "**/*.ts",
+      "**/*.py",
+      "**/*.go",
+      "**/*.rs",
+      "**/*.java",
+      "**/*.cpp",
+      "**/*.h",
+      "**/*.c",
+      "**/*.sh",
+      "**/*.sql",
+      "**/*.html",
+      "**/*.css",
+      "**/*.xml",
+      "**/*.toml",
+      "**/*.ini",
+      "**/*.cfg",
+      "**/*.conf"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Files have been modified in the workspace. Please analyze the changes and create or update the context index to reflect any new knowledge, decisions, or architectural constraints. Ensure the context remains comprehensive and current with all relevant information from the modified files."
+  }
+}

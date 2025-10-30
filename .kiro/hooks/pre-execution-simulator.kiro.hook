@@ -1,0 +1,28 @@
+{
+  "enabled": true,
+  "name": "Pre-Execution Simulator",
+  "description": "Automatically simulates expected outcomes before executing any queued task. If failure is probable due to missing dependencies or misconfiguration, generates and runs pre-fix tasks to ensure zero idle time from predictable errors.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.json",
+      "**/*.yaml",
+      "**/*.yml",
+      "**/*.toml",
+      "**/*.config",
+      "**/package.json",
+      "**/requirements.txt",
+      "**/Dockerfile",
+      "**/docker-compose.yml",
+      "**/*.sh",
+      "**/*.py",
+      "**/*.js",
+      "**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A configuration or dependency file has been modified. Before executing any queued tasks, simulate the expected outcomes based on the current state. Analyze for potential failures due to missing dependencies, misconfigurations, or compatibility issues. If failure is probable, automatically generate and queue pre-fix tasks to resolve these issues. Ensure zero idle time by proactively addressing predictable errors before they occur during task execution."
+  }
+}

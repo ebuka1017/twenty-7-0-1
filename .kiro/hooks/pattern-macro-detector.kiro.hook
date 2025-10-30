@@ -1,0 +1,39 @@
+{
+  "enabled": true,
+  "name": "Pattern Macro Detector",
+  "description": "Monitors file changes across repositories to detect recurring task patterns and automatically registers them as macros for future use",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.js",
+      "**/*.ts",
+      "**/*.py",
+      "**/*.java",
+      "**/*.cpp",
+      "**/*.c",
+      "**/*.go",
+      "**/*.rs",
+      "**/*.rb",
+      "**/*.php",
+      "**/*.cs",
+      "**/*.kt",
+      "**/*.swift",
+      "**/*.scala",
+      "**/*.sh",
+      "**/*.md",
+      "**/*.json",
+      "**/*.yaml",
+      "**/*.yml",
+      "**/*.xml",
+      "**/*.html",
+      "**/*.css",
+      "**/*.scss",
+      "**/*.less"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Analyze the recent file changes to identify if they represent a recurring task pattern that could be registered as a macro. Look for: 1) Similar code structures or modifications across files, 2) Repeated refactoring patterns, 3) Common configuration changes, 4) Standardized file creation patterns. If a pattern is detected that appears in multiple repositories or occurs frequently, suggest registering it as a macro with specific steps and offer it as the primary solution for similar future tasks."
+  }
+}

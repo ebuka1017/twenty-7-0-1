@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "name": "Unknown Command Resolver",
+  "description": "Automatically detects when unknown commands are issued, searches online for implementations, installs or generates missing code, and retries the action while logging what was added",
+  "version": "1",
+  "when": {
+    "type": "userTriggered",
+    "patterns": [
+      "**/*.sh",
+      "**/*.py",
+      "**/*.js",
+      "**/*.ts",
+      "**/package.json",
+      "**/requirements.txt",
+      "**/Makefile",
+      "**/*.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A user has made changes to files that may contain unknown commands or missing capabilities. Please analyze the recent changes and: 1) Identify any commands, functions, or capabilities that don't exist locally 2) Search online for services or tools that implement these capabilities 3) Install or generate the missing code automatically 4) Log what was added and why 5) Retry any failed actions. Focus on making the system self-healing and capable of resolving missing dependencies automatically."
+  }
+}

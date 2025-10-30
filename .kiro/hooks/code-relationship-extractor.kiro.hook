@@ -1,0 +1,28 @@
+{
+  "enabled": true,
+  "name": "Code Relationship Extractor",
+  "description": "Extracts relationships between files, functions, schemas, MCP servers, and external services to build a private knowledge graph for accelerated reasoning and reduced redundant searches",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.py",
+      "**/*.js",
+      "**/*.ts",
+      "**/*.json",
+      "**/*.yaml",
+      "**/*.yml",
+      "**/*.md",
+      "**/*.sql",
+      "**/*.go",
+      "**/*.java",
+      "**/*.cpp",
+      "**/*.h",
+      "**/*.rs"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Analyze the changed files and extract relationships between files, functions, schemas, MCP servers, and external services. Update the private knowledge graph with new connections, dependencies, and interactions. Focus on: 1) Function calls and imports between files 2) Schema definitions and their usage 3) MCP server configurations and endpoints 4) External service integrations and APIs 5) Data flow patterns and dependencies. Store this information in a knowledge_graph.md to accelerate future reasoning and reduce redundant code searches."
+  }
+}

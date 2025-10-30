@@ -1,0 +1,31 @@
+{
+  "enabled": true,
+  "name": "Data Structure Auto-Refactor",
+  "description": "Monitors data structure files for changes and triggers automatic refactoring across the system, followed by comprehensive test and performance validation",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.ts",
+      "**/*.js",
+      "**/*.py",
+      "**/*.java",
+      "**/*.cs",
+      "**/*.go",
+      "**/*.rs",
+      "**/*.cpp",
+      "**/*.h",
+      "**/*.hpp",
+      "**/*.json",
+      "**/*.yaml",
+      "**/*.yml",
+      "**/*.proto",
+      "**/*.avro",
+      "**/*.thrift"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A data structure file has been modified. Please analyze the changes and perform the following steps: 1) Identify all files that reference or depend on the modified data structure, 2) Generate and apply appropriate refactoring changes across the entire codebase to maintain compatibility, 3) Run all relevant tests to ensure functionality is preserved, 4) Perform performance benchmarks to validate that changes don't introduce regressions, 5) Provide a summary of all changes made and any potential issues discovered during testing."
+  }
+}

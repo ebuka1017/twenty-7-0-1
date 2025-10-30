@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "name": "Tool Performance Optimizer",
+  "description": "Monitors tool configuration files and automatically benchmarks multiple tool options, tracking success rate, latency, and reliability. Replaces lower-performing tools without human approval and maintains local capability scores.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/tools.json",
+      "**/tool-config.yaml",
+      "**/capabilities.json",
+      "**/*tool*.config",
+      "**/benchmarks/*.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Tool configuration changes detected. Please benchmark all available tool options for the affected capabilities, measuring success rate, latency, and reliability. Compare performance metrics against existing tools and automatically replace any lower-performing options. Update the local capability scores record and implement the optimal tool configuration without requiring human approval."
+  }
+}

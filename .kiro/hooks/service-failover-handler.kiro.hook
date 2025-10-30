@@ -1,0 +1,24 @@
+{
+  "enabled": true,
+  "name": "Service Failover Handler",
+  "description": "Monitors service configuration files and API endpoint definitions. When rate-limiting, failures, or service outages are detected, automatically searches for and switches to alternative endpoints or providers to maintain continuous operation.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/config/*.json",
+      "**/config/*.yaml",
+      "**/config/*.yml",
+      "**/*service*.js",
+      "**/*service*.ts",
+      "**/*api*.js",
+      "**/*api*.ts",
+      "**/endpoints.json",
+      "**/providers.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A service configuration or API endpoint file has been modified. Analyze the changes for any rate-limiting, failure handling, or service availability issues. If problems are detected, search for alternative endpoints or providers and implement seamless failover mechanisms. Ensure the system continues operating without blocking forward motion while the original service recovers."
+  }
+}
