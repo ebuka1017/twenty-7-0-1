@@ -1,44 +1,102 @@
+import { useState, useEffect } from 'react';
+import Dashboard from './components/Dashboard.js';
+import { useAudio } from './hooks/useAudio.js';
+
 export const App = () => {
-  return (
-    <div className="min-h-screen bg-gray-900 text-green-400 font-mono flex flex-col justify-center items-center">
-      {/* Cyberpunk background pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="w-full h-full" style={{
-          backgroundImage: `
-            linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px)
-          `,
-          backgroundSize: '50px 50px'
+  const [username, setUsername] = useState<string>('');
+  const [postId, setPostId] = useState<string>('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Initialize audio system
+  useAudio();
+
+  useEffect(() => {
+    initializeApp();
+  }, []);
+
+  const initializeApp = async () => {
+    try {
+      const response = await fetch('/api/init');
+      const data = await response.json();
+      
+      if (data.type === 'init') {
+        setUsername(data.username || 'Anonymous');
+        setPostId(data.postId || '');
+      } else {
+        setError('Failed to initialize application');
+      }
+    } catch (err) {
+      console.error('App initialization error:', err);
+      setError('Network error during initialization');
+      // Set fallback values for development
+      setUsername('DevUser');
+      setPostId('dev-post-id');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: '#1a1a1a',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        color: '#ffffff',
+        fontFamily: 'JetBrains Mono, monospace'
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          border: '3px solid #2d2d2d',
+          borderTop: '3px solid #00ff88',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite',
+          marginBottom: '1rem'
         }}></div>
+        <p>Initializing Vault System...</p>
       </div>
-      
-      {/* Main content */}
-      <div className="relative z-10 text-center">
-        <div className="mb-8">
-          <div className="w-32 h-32 mx-auto mb-4 border-2 border-green-400 rounded-full flex items-center justify-center">
-            <span className="text-2xl font-bold">2701</span>
-          </div>
-        </div>
-        
-        <h1 className="text-4xl font-bold mb-4 text-green-400">
-          Hello 2701
-        </h1>
-        
-        <p className="text-lg text-gray-300 mb-8">
-          Welcome to the Vault
-        </p>
-        
-        <div className="text-sm text-gray-500">
-          <p>Devvit Web Application</p>
-          <p>Status: <span className="text-green-400">Online</span></p>
-        </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: '#1a1a1a',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        color: '#ffffff',
+        fontFamily: 'JetBrains Mono, monospace',
+        textAlign: 'center',
+        padding: '2rem'
+      }}>
+        <h2 style={{ color: '#ff6b6b', marginBottom: '1rem' }}>System Error</h2>
+        <p style={{ marginBottom: '1rem' }}>{error}</p>
+        <button 
+          onClick={initializeApp}
+          style={{
+            background: '#00ff88',
+            color: '#1a1a1a',
+            border: 'none',
+            padding: '0.75rem 1.5rem',
+            borderRadius: '4px',
+            fontFamily: 'JetBrains Mono, monospace',
+            fontWeight: '700',
+            cursor: 'pointer'
+          }}
+        >
+          Retry Connection
+        </button>
       </div>
-      
-      {/* Corner accents */}
-      <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-green-400 opacity-50"></div>
-      <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-green-400 opacity-50"></div>
-      <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-green-400 opacity-50"></div>
-      <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-green-400 opacity-50"></div>
-    </div>
-  );
+    );
+  }
+
+  return <Dashboard username={username} postId={postId} />;
 };

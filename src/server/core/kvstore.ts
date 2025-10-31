@@ -1,16 +1,14 @@
-import { Context } from '@devvit/public-api';
+import { redis } from '@devvit/web/server';
 import { Cipher, Guess, UserProfile, Breadcrumb, Rally } from '../../shared/types/index.js';
 
 export class KVStoreService {
-  private context: Context;
-
-  constructor(context: Context) {
-    this.context = context;
+  constructor() {
+    // Using the global redis instance from @devvit/web/server
   }
 
   // Cipher operations
   async saveCipher(cipher: Cipher): Promise<void> {
-    await this.context.redis.hSet(`cipher:${cipher.id}`, {
+    await redis.hSet(`cipher:${cipher.id}`, {
       id: cipher.id,
       title: cipher.title,
       hint: cipher.hint,
@@ -29,13 +27,13 @@ export class KVStoreService {
 
     // Add to active ciphers list if active
     if (cipher.isActive) {
-      const count = await this.context.redis.incrBy('active_cipher_count', 1);
-      await this.context.redis.set(`active_cipher_id:${count}`, cipher.id);
+      const count = await redis.incrBy('active_cipher_count', 1);
+      await redis.set(`active_cipher_id:${count}`, cipher.id);
     }
   }
 
   async getCipher(cipherId: string): Promise<Cipher | null> {
-    const data = await this.context.redis.hGetAll(`cipher:${cipherId}`);
+    const data = await redis.hGetAll(`cipher:${cipherId}`);
     if (!data || !data.id) return null;
 
     return {
@@ -62,11 +60,11 @@ export class KVStoreService {
     const ciphers: Cipher[] = [];
     
     // For now, we'll track active cipher IDs in a simple counter-based system
-    const activeCipherCountStr = await this.context.redis.get('active_cipher_count');
+    const activeCipherCountStr = await redis.get('active_cipher_count');
     const activeCipherCount = parseInt(activeCipherCountStr || '0');
     
     for (let i = 1; i <= activeCipherCount; i++) {
-      const cipherId = await this.context.redis.get(`active_cipher_id:${i}`);
+      const cipherId = await redis.get(`active_cipher_id:${i}`);
       if (cipherId) {
         const cipher = await this.getCipher(cipherId);
         if (cipher && cipher.isActive && cipher.expiresAt > Date.now()) {
@@ -79,14 +77,14 @@ export class KVStoreService {
   }
 
   async expireCipher(cipherId: string): Promise<void> {
-    await this.context.redis.hSet(`cipher:${cipherId}`, { isActive: 'false' });
+    await redis.hSet(`cipher:${cipherId}`, { isActive: 'false' });
     // Note: In a production system, we'd properly remove from active list
     // For now, the getActiveCiphers method filters by expiration time
   }
 
   // Guess operations
   async saveGuess(guess: Guess): Promise<void> {
-    await this.context.redis.hSet(`guess:${guess.id}`, {
+    await redis.hSet(`guess:${guess.id}`, {
       id: guess.id,
       cipherId: guess.cipherId,
       userId: guess.userId,
@@ -98,19 +96,19 @@ export class KVStoreService {
     });
 
     // Add to cipher's guess list (using a simple counter and individual keys)
-    const guessCount = await this.context.redis.incrBy(`cipher_guess_count:${guess.cipherId}`, 1);
-    await this.context.redis.set(`cipher_guess:${guess.cipherId}:${guessCount}`, guess.id);
+    const guessCount = await redis.incrBy(`cipher_guess_count:${guess.cipherId}`, 1);
+    await redis.set(`cipher_guess:${guess.cipherId}:${guessCount}`, guess.id);
   }
 
   async getCipherGuesses(cipherId: string): Promise<Guess[]> {
-    const guessCountStr = await this.context.redis.get(`cipher_guess_count:${cipherId}`);
+    const guessCountStr = await redis.get(`cipher_guess_count:${cipherId}`);
     const guessCount = parseInt(guessCountStr || '0');
     const guesses: Guess[] = [];
 
     for (let i = 1; i <= guessCount; i++) {
-      const guessId = await this.context.redis.get(`cipher_guess:${cipherId}:${i}`);
+      const guessId = await redis.get(`cipher_guess:${cipherId}:${i}`);
       if (guessId) {
-        const data = await this.context.redis.hGetAll(`guess:${guessId}`);
+        const data = await redis.hGetAll(`guess:${guessId}`);
         if (data && data.id) {
           guesses.push({
             id: data.id,
@@ -131,11 +129,11 @@ export class KVStoreService {
 
   // Rally operations (atomic)
   async incrementRallyCount(guessId: string): Promise<number> {
-    return await this.context.redis.hIncrBy(`guess:${guessId}`, 'rallyCount', 1);
+    return await redis.hIncrBy(`guess:${guessId}`, 'rallyCount', 1);
   }
 
   async addRally(rally: Rally): Promise<void> {
-    await this.context.redis.hSet(`rally:${rally.id}`, {
+    await redis.hSet(`rally:${rally.id}`, {
       id: rally.id,
       guessId: rally.guessId,
       userId: rally.userId,
@@ -143,18 +141,18 @@ export class KVStoreService {
     });
 
     // Track user's rallies (using simple counter and keys)
-    const rallyCount = await this.context.redis.incrBy(`user_rally_count:${rally.userId}`, 1);
-    await this.context.redis.set(`user_rally:${rally.userId}:${rallyCount}`, rally.id);
+    const rallyCount = await redis.incrBy(`user_rally_count:${rally.userId}`, 1);
+    await redis.set(`user_rally:${rally.userId}:${rallyCount}`, rally.id);
   }
 
   async hasUserRallied(userId: string, guessId: string): Promise<boolean> {
-    const rallyCountStr = await this.context.redis.get(`user_rally_count:${userId}`);
+    const rallyCountStr = await redis.get(`user_rally_count:${userId}`);
     const rallyCount = parseInt(rallyCountStr || '0');
     
     for (let i = 1; i <= rallyCount; i++) {
-      const rallyId = await this.context.redis.get(`user_rally:${userId}:${i}`);
+      const rallyId = await redis.get(`user_rally:${userId}:${i}`);
       if (rallyId) {
-        const rally = await this.context.redis.hGetAll(`rally:${rallyId}`);
+        const rally = await redis.hGetAll(`rally:${rallyId}`);
         if (rally && rally.guessId === guessId) {
           return true;
         }
@@ -166,7 +164,7 @@ export class KVStoreService {
 
   // User profile operations
   async saveUserProfile(profile: UserProfile): Promise<void> {
-    await this.context.redis.hSet(`user:${profile.user_id}`, {
+    await redis.hSet(`user:${profile.user_id}`, {
       user_id: profile.user_id,
       username: profile.username,
       solves_count: profile.solves_count.toString(),
@@ -183,7 +181,7 @@ export class KVStoreService {
   }
 
   async getUserProfile(userId: string): Promise<UserProfile | null> {
-    const data = await this.context.redis.hGetAll(`user:${userId}`);
+    const data = await redis.hGetAll(`user:${userId}`);
     if (!data || !data.user_id) return null;
 
     return {
@@ -208,7 +206,7 @@ export class KVStoreService {
     const windowKey = `${key}:${Math.floor(now / (windowSeconds * 1000))}`;
     
     // Get current count for this window
-    const currentStr = await this.context.redis.get(windowKey);
+    const currentStr = await redis.get(windowKey);
     const current = parseInt(currentStr || '0');
     
     if (current >= limit) {
@@ -217,15 +215,15 @@ export class KVStoreService {
     }
     
     // Increment counter for this window
-    await this.context.redis.incrBy(windowKey, 1);
-    await this.context.redis.expire(windowKey, windowSeconds);
+    await redis.incrBy(windowKey, 1);
+    await redis.expire(windowKey, windowSeconds);
     
     return { allowed: true, current: current + 1, resetTime: now + (windowSeconds * 1000) };
   }
 
   // Breadcrumb operations
   async saveBreadcrumb(breadcrumb: Breadcrumb): Promise<void> {
-    await this.context.redis.hSet(`breadcrumb:${breadcrumb.breadcrumb_id}`, {
+    await redis.hSet(`breadcrumb:${breadcrumb.breadcrumb_id}`, {
       breadcrumb_id: breadcrumb.breadcrumb_id,
       narrative_thread_id: breadcrumb.narrative_thread_id,
       connection_nodes: JSON.stringify(breadcrumb.connection_nodes),
@@ -240,15 +238,15 @@ export class KVStoreService {
     });
 
     // Add to global breadcrumb counter
-    await this.context.redis.incrBy('global_breadcrumb_count', 1);
-    await this.context.redis.incrBy(`breadcrumb_count:${breadcrumb.thematic_category}`, 1);
+    await redis.incrBy('global_breadcrumb_count', 1);
+    await redis.incrBy(`breadcrumb_count:${breadcrumb.thematic_category}`, 1);
   }
 
   async getBreadcrumbCount(): Promise<{ total: number; byCategory: Record<string, number> }> {
-    const total = await this.context.redis.get('global_breadcrumb_count') || '0';
-    const privacy = await this.context.redis.get('breadcrumb_count:privacy') || '0';
-    const auditing = await this.context.redis.get('breadcrumb_count:auditing') || '0';
-    const patents = await this.context.redis.get('breadcrumb_count:patents') || '0';
+    const total = await redis.get('global_breadcrumb_count') || '0';
+    const privacy = await redis.get('breadcrumb_count:privacy') || '0';
+    const auditing = await redis.get('breadcrumb_count:auditing') || '0';
+    const patents = await redis.get('breadcrumb_count:patents') || '0';
 
     return {
       total: parseInt(total),
@@ -258,5 +256,107 @@ export class KVStoreService {
         patents: parseInt(patents)
       }
     };
+  }
+
+  // Additional methods needed for cipher detail page
+  async getGuessCount(cipherId: string): Promise<number> {
+    const guessCountStr = await redis.get(`cipher_guess_count:${cipherId}`);
+    return parseInt(guessCountStr || '0');
+  }
+
+  async storeGuess(guess: Guess): Promise<void> {
+    // Use the existing saveGuess method
+    await this.saveGuess(guess);
+  }
+
+  // Leaderboard operations
+  async getLeaderboard(_page: number = 1, _limit: number = 25): Promise<{
+    users: Array<UserProfile & { total_score: number; rank: number; speed_bonus: number; rally_bonus: number }>;
+    totalUsers: number;
+    currentUserRank?: number;
+  }> {
+    try {
+      // For now, return empty data since we don't have users yet
+      // In a real implementation, we'd fetch all user profiles, calculate scores, and rank them
+      return {
+        users: [],
+        totalUsers: 0
+      };
+    } catch (error) {
+      console.error('Error getting leaderboard:', error);
+      return {
+        users: [],
+        totalUsers: 0
+      };
+    }
+  }
+
+  async getUserRank(_userId: string): Promise<number> {
+    try {
+      // For now, return rank 1 as placeholder
+      // In a real implementation, we'd calculate the user's rank based on their score
+      return 1;
+    } catch (error) {
+      console.error('Error getting user rank:', error);
+      return 1;
+    }
+  }
+
+  // User profile update operations
+  async updateUserStats(userId: string, updates: Partial<UserProfile>): Promise<void> {
+    try {
+      const profile = await this.getUserProfile(userId);
+      if (!profile) {
+        console.error(`User profile not found: ${userId}`);
+        return;
+      }
+
+      // Merge updates
+      const updatedProfile = { ...profile, ...updates, last_active: Date.now() };
+      await this.saveUserProfile(updatedProfile);
+      
+    } catch (error) {
+      console.error('Error updating user stats:', error);
+    }
+  }
+
+  async incrementUserSolves(userId: string, difficulty: 'easy' | 'medium' | 'hard', solveTime: number): Promise<void> {
+    try {
+      const profile = await this.getUserProfile(userId);
+      if (!profile) return;
+
+      // Update solve count and difficulty breakdown
+      profile.solves_count += 1;
+      profile.difficulty_breakdown[difficulty] += 1;
+      
+      // Update average solve time
+      const totalSolveTime = profile.avg_solve_time_seconds * (profile.solves_count - 1) + solveTime;
+      profile.avg_solve_time_seconds = totalSolveTime / profile.solves_count;
+      
+      await this.saveUserProfile(profile);
+      
+    } catch (error) {
+      console.error('Error incrementing user solves:', error);
+    }
+  }
+
+  async updateUserRallyStats(userId: string, wasSuccessful: boolean): Promise<void> {
+    try {
+      const profile = await this.getUserProfile(userId);
+      if (!profile) return;
+
+      profile.total_rallies += 1;
+      if (wasSuccessful) {
+        profile.successful_rallies += 1;
+      }
+      
+      // Recalculate rally accuracy
+      profile.rally_accuracy_percentage = (profile.successful_rallies / profile.total_rallies) * 100;
+      
+      await this.saveUserProfile(profile);
+      
+    } catch (error) {
+      console.error('Error updating user rally stats:', error);
+    }
   }
 }

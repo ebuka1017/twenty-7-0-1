@@ -1,0 +1,15 @@
+# Rally Click Sound Effect
+
+This file should be replaced with a satisfying click sound for rally actions.
+
+## Specifications:
+- Format: MP3
+- Duration: 200ms
+- Volume: Optimized for 0.5 playback volume
+- Style: Satisfying click/tap sound with slight electronic/digital flavor
+- File size: <100KB
+
+## Usage:
+- Plays when user clicks rally button
+- Accompanied by haptic feedback on mobile
+- Part of the rally interaction feedback system

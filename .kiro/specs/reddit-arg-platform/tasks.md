@@ -6,7 +6,6 @@ Convert the 2701 cyberpunk vault design into a series of actionable coding tasks
 
 - [x] 1. Set up Devvit Web project structure and basic configuration
 
-
   - Initialize Devvit Web project with TypeScript and React
   - Configure devvit.json with required permissions (webview, realtime, kvstore, scheduler, triggers)
   - Set up basic folder structure (src/client, src/server, assets)
@@ -14,18 +13,15 @@ Convert the 2701 cyberpunk vault design into a series of actionable coding tasks
   - Test basic webview loading with "Hello 2701" placeholder
   - _Requirements: 1.1, 1.2_
 
-- [X] 2. Implement core data models and KV Store operations
-
-
+- [x] 2. Implement core data models and KV Store operations
 
   - Define TypeScript interfaces for Cipher, UserProfile, Guess, Breadcrumb
   - Create KV Store helper func tions for CRUD operations
   - Implement atomic operations for rally counters using ZINCRBY
 
-
   - _Requirements: 4.5, 10.1, 10.4_
 
-- [ ] 3. Build cyberpunk dashboard UI with responsive layout
+- [x] 3. Build cyberpunk dashboard UI with responsive layout
 
   - Create React dashboard component with dark theme (#1a1a1a background, #00ff88 accents)
   - Implement CSS Grid layout: mobile (2-column), desktop (3-column)
@@ -35,7 +31,8 @@ Convert the 2701 cyberpunk vault design into a series of actionable coding tasks
   - Add header with audio toggle and user profile badge
   - _Requirements: 1.3, 1.4, 2.1, 2.2, 11.1_
 
-- [ ] 4. Implement cipher generation system with AI integration
+- [x] 4. Implement cipher generation system with AI integration
+
 
   - Create Devvit scheduler job for hourly cipher generation
   - Integrate Perplexity API for fetching recent events (privacy, auditing, patents themes)
@@ -45,7 +42,11 @@ Convert the 2701 cyberpunk vault design into a series of actionable coding tasks
   - Store generated ciphers in KV Store with proper metadata
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 9.1_
 
-- [ ] 5. Create cipher display pages with countdown timers
+- [x] 5. Create cipher display pages with countdown timers
+
+
+
+
 
   - Build individual cipher page component with back navigation
   - Implement large countdown timer with MM:SS format, updating every second
@@ -54,7 +55,7 @@ Convert the 2701 cyberpunk vault design into a series of actionable coding tasks
   - Display cipher hint and difficulty badge prominently
   - _Requirements: 2.3, 2.4, 10.2_
 
-- [ ] 6. Implement guess submission and rally mechanics
+- [x] 6. Implement guess submission and rally mechanics
 
   - Create guess submission system with rate limiting (5 guesses per minute)
   - Build guess list component showing all guesses with rally counts
@@ -63,7 +64,7 @@ Convert the 2701 cyberpunk vault design into a series of actionable coding tasks
   - Create rally rate limiting (10 rallies per minute per user)
   - _Requirements: 3.1, 3.2, 10.3_
 
-- [ ] 7. Add real-time synchronization for rally updates
+- [x] 7. Add real-time synchronization for rally updates
 
   - Set up Devvit realtime channels for rally updates
   - Implement WebSocket connection management in React frontend
@@ -72,7 +73,7 @@ Convert the 2701 cyberpunk vault design into a series of actionable coding tasks
   - Implement fallback to 5-second polling when WebSocket fails
   - _Requirements: 3.3, 8.3, 9.3_
 
-- [ ] 8. Build user profile system and title progression
+- [x] 8. Build user profile system and title progression
 
   - Create user profile tracking with solve counts and rally accuracy
   - Implement title calculation logic (Apprentice, Locksmith, Master_Locksmith, Cipher_Sage)
@@ -81,7 +82,12 @@ Convert the 2701 cyberpunk vault design into a series of actionable coding tasks
   - Integrate Reddit flair updates for user titles
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 9. Implement cipher expiration and winner determination
+- [x] 9. Implement cipher expiration and winner determination
+
+
+
+
+
 
   - Create scheduler job for cipher expiration handling
   - Add T-10 second lockdown functionality (disable rally buttons, show "LOCKED" status)
@@ -90,7 +96,7 @@ Convert the 2701 cyberpunk vault design into a series of actionable coding tasks
   - Auto-post solution as Reddit comment with winner announcement
   - _Requirements: 3.4, 3.5_
 
-- [ ] 10. Add immersive audio and visual effects
+- [x] 10. Add immersive audio and visual effects
 
   - Implement background music system (vault-synth.mp3 loop, volume 0.2)
   - Add click sound effects for rally actions (rally-click.mp3)
@@ -99,7 +105,11 @@ Convert the 2701 cyberpunk vault design into a series of actionable coding tasks
   - Implement haptic feedback for mobile devices (navigator.vibrate)
   - _Requirements: 1.5, 11.2, 11.3, 11.4_
 
-- [ ] 11. Create splash screen system for cipher posts
+- [x] 11. Create splash screen system for cipher posts
+
+
+
+
 
   - Design cyberpunk splash screen with vault background and cicada icon
   - Implement custom post creation with splash configuration
@@ -109,6 +119,7 @@ Convert the 2701 cyberpunk vault design into a series of actionable coding tasks
   - _Requirements: 1.1_
 
 - [ ] 12. Implement breadcrumb collection and narrative system
+
 
   - Create breadcrumb generation when ciphers are solved
   - Add thematic categorization (privacy, auditing, patents) based on source events

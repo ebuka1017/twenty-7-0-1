@@ -3,11 +3,13 @@
     "devvit-mcp": {
       "command": "devvit-mcp",
       "args": [],
-      "disabled": false,
-      "autoApprove": [],
       "env": {
         "NODE_OPTIONS": "--max-old-space-size=4096"
-      }
+      },
+      "disabled": false,
+      "autoApprove": [
+        "devvit_search"
+      ]
     }
   }
 }

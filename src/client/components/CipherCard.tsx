@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Cipher, DIFFICULTY_CONFIG } from '../../shared/types/index.js';
 import './CipherCard.css';
 
@@ -37,18 +38,46 @@ const CipherCard: React.FC<CipherCardProps> = ({ cipher, onCipherClick }) => {
   };
 
   const difficultyConfig = DIFFICULTY_CONFIG[cipher.difficulty];
+  if (!difficultyConfig) {
+    console.error('Invalid difficulty:', cipher.difficulty);
+    return null;
+  }
+  
   const isExpired = timeRemaining === 0;
   const isUrgent = timeRemaining < 600000; // Less than 10 minutes
 
   return (
-    <div 
+    <motion.div 
       className={`cipher-card ${isExpired ? 'expired' : ''} ${isUrgent ? 'urgent' : ''}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onCipherClick}
-      style={{
-        transform: isHovered ? 'scale(1.02)' : 'scale(1)',
-        boxShadow: isHovered ? '0 8px 25px rgba(0, 255, 136, 0.3)' : '0 4px 15px rgba(0, 0, 0, 0.3)'
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ 
+        opacity: 1, 
+        y: 0,
+        scale: isHovered ? 1.02 : (isUrgent ? [1, 1.05, 1] : 1),
+        boxShadow: isHovered 
+          ? '0 8px 25px rgba(0, 255, 136, 0.3)' 
+          : (isUrgent 
+            ? '0 4px 20px rgba(255, 107, 107, 0.4)'
+            : '0 4px 15px rgba(0, 0, 0, 0.3)')
+      }}
+      transition={{ 
+        duration: isUrgent ? 2 : 0.3,
+        type: isUrgent ? "tween" : "spring",
+        stiffness: 300,
+        damping: 30,
+        repeat: isUrgent ? Infinity : 0,
+        repeatType: "reverse"
+      }}
+      whileHover={{ 
+        scale: 1.02,
+        transition: { duration: 0.2 }
+      }}
+      whileTap={{ 
+        scale: 0.98,
+        transition: { duration: 0.1 }
       }}
     >
       <div className="cipher-card-header">
@@ -113,7 +142,7 @@ const CipherCard: React.FC<CipherCardProps> = ({ cipher, onCipherClick }) => {
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

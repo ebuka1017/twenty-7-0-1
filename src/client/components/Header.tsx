@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { UserService } from '../services/user.js';
+import { audioService } from '../services/audio.js';
 import './Header.css';
 
 interface HeaderProps {
@@ -7,16 +9,40 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ username }) => {
   const [audioMuted, setAudioMuted] = useState(() => {
-    return localStorage.getItem('2701_audio_muted') === 'true';
+    return audioService.isMutedState();
   });
+  const [userTitle, setUserTitle] = useState('APPRENTICE');
+  const [titleColor, setTitleColor] = useState('#a0a0a0');
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, [username]);
+
+  const fetchUserProfile = async () => {
+    try {
+      const response = await fetch('/api/user/profile');
+      const data = await response.json();
+      
+      if (data.success && data.data.profile) {
+        const title = UserService.getHighestTitle(data.data.profile);
+        const color = UserService.getTitleColor(title);
+        setUserTitle(title);
+        setTitleColor(color);
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+      // Keep default values
+    }
+  };
 
   const toggleAudio = () => {
-    const newMuted = !audioMuted;
+    const newMuted = audioService.toggleMute();
     setAudioMuted(newMuted);
-    localStorage.setItem('2701_audio_muted', newMuted.toString());
     
-    // TODO: Implement actual audio control in later task
-    console.log('Audio toggled:', newMuted ? 'muted' : 'unmuted');
+    // Play a subtle click sound when toggling (if unmuting)
+    if (!newMuted) {
+      audioService.playSound('rally-click');
+    }
   };
 
   return (
@@ -39,8 +65,8 @@ const Header: React.FC<HeaderProps> = ({ username }) => {
         <div className="header-right">
           <div className="user-profile">
             <span className="username">{username}</span>
-            <div className="user-badge">
-              <span className="badge-text">APPRENTICE</span>
+            <div className="user-badge" style={{ borderColor: titleColor }}>
+              <span className="badge-text" style={{ color: titleColor }}>{userTitle}</span>
             </div>
           </div>
           

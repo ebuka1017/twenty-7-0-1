@@ -23,17 +23,9 @@
   border-color: #ff6b6b;
 }
 
+/* Urgent styling handled by Framer Motion animations */
 .cipher-card.urgent {
-  animation: pulse-urgent 2s infinite;
-}
-
-@keyframes pulse-urgent {
-  0%, 100% { 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  }
-  50% { 
-    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
-  }
+  /* Static urgent styling - animation handled by Framer Motion */
 }
 
 /* Card Header */

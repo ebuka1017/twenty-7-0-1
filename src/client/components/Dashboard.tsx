@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Cipher } from '../../shared/types/index.js';
 import CipherCard from './CipherCard.js';
+import CipherDetail from './CipherDetail.js';
 import Leaderboard from './Leaderboard.js';
 import Header from './Header.js';
 import './Dashboard.css';
 
 interface DashboardProps {
   username: string;
-  postId: string;
+  postId: string; // Will be used in later tasks for post-specific data
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ username, postId }) => {
+const Dashboard: React.FC<DashboardProps> = ({ username }) => {
   const [ciphers, setCiphers] = useState<Cipher[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCipherId, setSelectedCipherId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchActiveCiphers();
@@ -63,6 +66,16 @@ const Dashboard: React.FC<DashboardProps> = ({ username, postId }) => {
     );
   }
 
+  // Show cipher detail page if a cipher is selected
+  if (selectedCipherId) {
+    return (
+      <CipherDetail 
+        cipherId={selectedCipherId} 
+        onBack={() => setSelectedCipherId(null)} 
+      />
+    );
+  }
+
   return (
     <div className="dashboard">
       <Header username={username} />
@@ -76,18 +89,38 @@ const Dashboard: React.FC<DashboardProps> = ({ username, postId }) => {
               <p className="hint">New ciphers drop every hour...</p>
             </div>
           ) : (
-            <div className="ciphers-grid">
-              {ciphers.map((cipher) => (
-                <CipherCard 
-                  key={cipher.id} 
-                  cipher={cipher}
-                  onCipherClick={() => {
-                    // Navigate to cipher detail - will implement in later task
-                    console.log('Navigate to cipher:', cipher.id);
-                  }}
-                />
-              ))}
-            </div>
+            <motion.div 
+              className="ciphers-grid"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <AnimatePresence mode="popLayout">
+                {ciphers.map((cipher, index) => (
+                  <motion.div
+                    key={cipher.id}
+                    initial={{ opacity: 0, scale: 0.8, y: 50 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.8, y: -50 }}
+                    transition={{ 
+                      duration: 0.5,
+                      delay: index * 0.1,
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 30
+                    }}
+                    layout
+                  >
+                    <CipherCard 
+                      cipher={cipher}
+                      onCipherClick={() => {
+                        setSelectedCipherId(cipher.id);
+                      }}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
           )}
         </section>
 

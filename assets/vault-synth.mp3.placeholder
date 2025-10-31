@@ -1,0 +1,15 @@
+# Vault Synth Background Music
+
+This file should be replaced with a 30-second seamless loop of cyberpunk/synthwave background music.
+
+## Specifications:
+- Format: MP3
+- Duration: 30 seconds (seamless loop)
+- Volume: Optimized for 0.2 playback volume
+- Style: Dark synthwave/cyberpunk ambient
+- File size: <2MB recommended
+
+## Usage:
+- Plays continuously in background when user is not muted
+- Loops seamlessly without gaps
+- Controlled by audio service mute toggle

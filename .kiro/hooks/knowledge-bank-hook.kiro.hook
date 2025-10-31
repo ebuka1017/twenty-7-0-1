@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Personal Knowledge Bank",
+  "description": "Automatically creates and updates a curious.md file that serves as your personal brain/context bank, summarizing what was learned from file changes to build understanding for future iterations",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Files have been saved and changed. Go through everything that was modified, created, or deleted and create or update a file called curious.md that serves as your personal brain/context bank. This should be a comprehensive summary of what you learned from this iteration - what patterns you observed, what the codebase structure tells you, what the user is trying to accomplish, key insights about the technology stack, and any other knowledge that would help you understand what you're supposed to do in future iterations. When new files are created in the future, you should use this knowledge bank to better understand the context and requirements."
+  }
+}

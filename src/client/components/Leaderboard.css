@@ -1,0 +1,281 @@
+/* Leaderboard Styles */
+.leaderboard {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  overflow: hidden;
+  height: fit-content;
+}
+
+.leaderboard-header {
+  background: #1a1a1a;
+  border-bottom: 1px solid #404040;
+  padding: 1rem;
+}
+
+.leaderboard-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #00ff88;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.5rem 0;
+}
+
+.leaderboard-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-users {
+  font-size: 0.8rem;
+  color: #a0a0a0;
+}
+
+/* Loading State */
+.loading-state {
+  padding: 2rem;
+  text-align: center;
+  color: #a0a0a0;
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #404040;
+  border-top: 2px solid #00ff88;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+/* Leaderboard Content */
+.leaderboard-content {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.leaderboard-entry {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #404040;
+  transition: background-color 0.2s ease;
+  gap: 1rem;
+}
+
+.leaderboard-entry:hover {
+  background: rgba(0, 255, 136, 0.05);
+}
+
+.leaderboard-entry:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-entry.top-three {
+  background: rgba(0, 255, 136, 0.1);
+}
+
+/* Rank Section */
+.rank-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 40px;
+}
+
+.rank-number {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.rank-change {
+  font-size: 0.8rem;
+  margin-top: 0.1rem;
+}
+
+.rank-change.↑ {
+  color: #00ff88;
+}
+
+.rank-change.→ {
+  color: #f59e0b;
+}
+
+.rank-change.↓ {
+  color: #ff6b6b;
+}
+
+/* User Section */
+.user-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.username {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-title {
+  font-size: 0.7rem;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Stats Section */
+.stats-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.primary-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 50px;
+}
+
+.primary-stat .stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #00ff88;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.secondary-stats {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 35px;
+}
+
+.stat-value {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.stat-label {
+  font-size: 0.6rem;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.1rem;
+}
+
+/* Pagination */
+.leaderboard-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #1a1a1a;
+  border-top: 1px solid #404040;
+}
+
+.page-button {
+  background: #404040;
+  border: 1px solid #606060;
+  color: #ffffff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'JetBrains Mono', monospace;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-button:hover:not(:disabled) {
+  border-color: #00ff88;
+  background: rgba(0, 255, 136, 0.1);
+}
+
+.page-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 0.8rem;
+  color: #a0a0a0;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .leaderboard-entry {
+    padding: 0.5rem 0.75rem;
+    gap: 0.75rem;
+  }
+  
+  .stats-section {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+  }
+  
+  .secondary-stats {
+    gap: 0.5rem;
+  }
+  
+  .username {
+    font-size: 0.8rem;
+  }
+  
+  .user-title {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .leaderboard-header {
+    padding: 0.75rem;
+  }
+  
+  .leaderboard-entry {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+  
+  .rank-section {
+    min-width: 30px;
+  }
+  
+  .rank-number {
+    font-size: 0.9rem;
+  }
+  
+  .stats-section {
+    gap: 0.25rem;
+  }
+  
+  .secondary-stats {
+    gap: 0.25rem;
+  }
+  
+  .stat-item {
+    min-width: 30px;
+  }
+}

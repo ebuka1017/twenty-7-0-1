@@ -1,0 +1,15 @@
+# Success Sound Effect
+
+This file should be replaced with a success/achievement sound.
+
+## Specifications:
+- Format: MP3
+- Duration: 500ms
+- Volume: Optimized for 0.4 playback volume
+- Style: Positive, uplifting success sound
+- File size: <200KB
+
+## Usage:
+- Plays when cipher is solved successfully
+- Plays when user achieves new title
+- Accompanied by celebration haptic pattern
